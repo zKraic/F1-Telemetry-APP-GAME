@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="400dp"
+    android:height="300dp"
+    android:viewportWidth="400"
+    android:viewportHeight="300">
+
+    <!-- Background -->
+    <path
+        android:pathData="M0,0 L400,0 L400,300 L0,300 Z"
+        android:fillColor="@color/f1_background" />
+
+    <!-- Suzuka - Figure 8 layout -->
+    <path
+        android:pathData="M80,200 Q60,180 70,160 Q80,140 100,130 L150,125 Q180,120 200,130 Q220,140 230,160 Q240,180 230,200 Q220,220 200,230 Q180,240 150,235 L120,230 Q100,225 90,210 Q80,205 80,200 Z"
+        android:strokeColor="@color/f1_white"
+        android:strokeWidth="4"
+        android:fillColor="@color/f1_surface" />
+        
+    <!-- Upper section -->
+    <path
+        android:pathData="M200,130 Q250,120 280,130 Q310,140 320,160 Q330,180 320,200 Q310,220 280,230 Q250,240 220,235 Q200,230 200,210 Q200,190 200,170 Q200,150 200,130"
+        android:strokeColor="@color/f1_white"
+        android:strokeWidth="4"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- 130R corner -->
+    <path
+        android:pathData="M280,130 Q310,140 320,160"
+        android:strokeColor="@color/f1_orange"
+        android:strokeWidth="3" />
+
+    <!-- Start/Finish -->
+    <path
+        android:pathData="M78,195 L82,195 L82,205 L78,205 Z"
+        android:fillColor="@color/f1_red" />
+
+</vector>

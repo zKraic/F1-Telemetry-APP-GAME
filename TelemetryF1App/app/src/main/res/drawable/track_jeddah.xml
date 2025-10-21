@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="400dp"
+    android:height="300dp"
+    android:viewportWidth="400"
+    android:viewportHeight="300">
+
+    <!-- Background -->
+    <path
+        android:pathData="M0,0 L400,0 L400,300 L0,300 Z"
+        android:fillColor="@color/f1_background" />
+
+    <!-- Jeddah street circuit - fast and flowing -->
+    <path
+        android:pathData="M30,150 L100,150 Q120,150 130,140 L130,100 Q135,80 155,70 Q175,60 195,65 L250,70 Q280,75 300,90 Q320,105 330,125 L335,150 Q340,170 330,190 Q320,210 300,225 Q280,240 250,245 L195,250 Q175,255 155,245 Q135,235 130,215 L130,175 Q120,165 100,165 L30,165 Q20,165 20,155 L20,145 Q20,135 30,135 L30,150 Z"
+        android:strokeColor="@color/f1_white"
+        android:strokeWidth="4"
+        android:fillColor="@color/f1_surface" />
+
+    <!-- High speed sections -->
+    <path
+        android:pathData="L100,150 Q120,150 130,140 L130,100"
+        android:strokeColor="@color/f1_cyan"
+        android:strokeWidth="3" />
+    <path
+        android:pathData="L250,70 Q280,75 300,90 Q320,105 330,125"
+        android:strokeColor="@color/f1_cyan"
+        android:strokeWidth="3" />
+
+    <!-- Start/Finish -->
+    <path
+        android:pathData="M28,145 L32,145 L32,155 L28,155 Z"
+        android:fillColor="@color/f1_red" />
+
+</vector>

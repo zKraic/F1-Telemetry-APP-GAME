@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="400dp"
+    android:height="300dp"
+    android:viewportWidth="400"
+    android:viewportHeight="300">
+
+    <!-- Background -->
+    <path
+        android:pathData="M0,0 L400,0 L400,300 L0,300 Z"
+        android:fillColor="@color/f1_background" />
+
+    <!-- Miami International Autodrome -->
+    <path
+        android:pathData="M80,180 Q60,160 70,140 Q80,120 100,110 L140,100 Q160,95 180,100 L220,105 Q250,110 270,125 Q290,140 300,160 Q310,180 300,200 Q290,220 270,235 Q250,250 220,255 L180,260 Q160,265 140,260 L100,255 Q80,250 70,230 Q60,210 70,190 Q80,185 80,180 Z"
+        android:strokeColor="@color/f1_white"
+        android:strokeWidth="5"
+        android:fillColor="@color/f1_surface" />
+
+    <!-- Stadium section -->
+    <path
+        android:pathData="M270,125 Q290,140 300,160"
+        android:strokeColor="@color/f1_orange"
+        android:strokeWidth="3" />
+
+    <!-- Marina area -->
+    <path
+        android:pathData="M220,255 L180,260 Q160,265 140,260"
+        android:strokeColor="@color/f1_blue"
+        android:strokeWidth="2" />
+
+    <!-- Start/Finish -->
+    <path
+        android:pathData="M78,175 L82,175 L82,185 L78,185 Z"
+        android:fillColor="@color/f1_red" />
+
+</vector>
