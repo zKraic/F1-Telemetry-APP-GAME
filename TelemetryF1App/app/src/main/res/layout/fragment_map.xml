@@ -1,85 +1,210 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/f1_black"
+    android:background="?attr/colorBackground"
+    android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/track_name"
-        android:layout_width="0dp"
+    <!-- Header Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Circuito Desconocido"
-        android:textColor="@color/f1_white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/connection_status"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginBottom="16dp"
+        style="@style/F1CardView">
 
-    <TextView
-        android:id="@+id/connection_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Desconectado"
-        android:textColor="@color/f1_red"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
-    <telemetry.f1.app.ui.map.TrackMapView
-        android:id="@+id/track_map_view"
-        android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CIRCUITO"
+                    style="@style/F1TelemetryLabel" />
+
+                <TextView
+                    android:id="@+id/track_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Detectando..."
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="Silverstone Circuit (Britain)" />
+
+                <TextView
+                    android:id="@+id/car_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="0 coches detectados"
+                    style="@style/F1CardSubtitle"
+                    tools:text="20 coches (Posición: 5)" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <View
+                    android:id="@+id/connection_indicator"
+                    style="@style/F1StatusIndicator"
+                    android:layout_marginBottom="4dp"
+                    android:backgroundTint="@color/f1_danger" />
+
+                <TextView
+                    android:id="@+id/connection_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Desconectado"
+                    style="@style/F1ConnectionStatus" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Map Container Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toTopOf="@id/legend_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/track_name" />
+        android:layout_weight="1"
+        style="@style/F1CardView">
 
-    <LinearLayout
-        android:id="@+id/legend_layout"
-        android:layout_width="0dp"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Circuit background image -->
+            <ImageView
+                android:id="@+id/track_map_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.6"
+                android:contentDescription="Circuit layout"
+                android:scaleType="centerInside"
+                android:src="@drawable/track_placeholder"
+                tools:src="@drawable/track_silverstone" />
+
+            <!-- Car positions overlay -->
+            <telemetry.f1.app.ui.map.TrackMapView
+                android:id="@+id/track_map_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <!-- Loading indicator -->
+            <ProgressBar
+                android:id="@+id/loading_indicator"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/f1_red"
+                android:visibility="visible"
+                tools:visibility="gone" />
+
+            <!-- Debug info overlay (can be removed in production) -->
+            <TextView
+                android:id="@+id/debug_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:layout_margin="8dp"
+                android:background="@color/f1_overlay_dark"
+                android:padding="4dp"
+                android:text="Debug info"
+                android:textColor="@color/f1_white"
+                android:textSize="10sp"
+                android:typeface="monospace"
+                tools:text="Motion data: 60.0 FPS, 20 cars" />
+
+        </FrameLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Legend Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_marginTop="12dp"
+        style="@style/F1CardView">
 
-        <View
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:background="@drawable/circle_indicator"
-            android:backgroundTint="@color/f1_red" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="24dp"
-            android:text="Tu coche"
-            android:textColor="@color/f1_white"
-            android:textSize="14sp" />
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="12dp">
 
-        <View
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:background="@drawable/circle_indicator"
-            android:backgroundTint="@color/f1_white" />
+            <!-- Player legend -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Otros coches"
-            android:textColor="@color/f1_white"
-            android:textSize="14sp" />
+                <View
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/circle_indicator"
+                    android:backgroundTint="@color/f1_red" />
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tu coche"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="14sp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <!-- Spacer -->
+            <View
+                android:layout_width="24dp"
+                android:layout_height="1dp" />
+
+            <!-- Other cars legend -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/circle_indicator"
+                    android:backgroundTint="@color/f1_white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Otros coches"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>
