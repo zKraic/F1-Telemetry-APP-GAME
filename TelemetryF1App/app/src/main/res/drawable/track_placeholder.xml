@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="400dp"
+    android:height="300dp"
+    android:viewportWidth="400"
+    android:viewportHeight="300">
+
+    <!-- Background -->
+    <path
+        android:pathData="M0,0 L400,0 L400,300 L0,300 Z"
+        android:fillColor="@color/f1_dark_gray" />
+
+    <!-- Generic oval track -->
+    <path
+        android:pathData="M100,150 Q100,80 200,80 Q300,80 300,150 Q300,220 200,220 Q100,220 100,150 Z"
+        android:strokeColor="@color/f1_white"
+        android:strokeWidth="4"
+        android:fillColor="@android:color/transparent" />
+
+    <!-- Start/Finish line -->
+    <path
+        android:pathData="M98,145 L102,145 L102,155 L98,155 Z"
+        android:fillColor="@color/f1_red" />
+
+    <!-- Grid pattern for texture -->
+    <group
+        android:translateX="0"
+        android:translateY="0">
+        <path
+            android:pathData="M0,50 L400,50 M0,100 L400,100 M0,150 L400,150 M0,200 L400,200 M0,250 L400,250"
+            android:strokeColor="@color/f1_surface"
+            android:strokeWidth="1" />
+        <path
+            android:pathData="M50,0 L50,300 M100,0 L100,300 M150,0 L150,300 M200,0 L200,300 M250,0 L250,300 M300,0 L300,300 M350,0 L350,300"
+            android:strokeColor="@color/f1_surface"
+            android:strokeWidth="1" />
+    </group>
+
+    <!-- Center text -->
+    <text
+        android:x="200"
+        android:y="150"
+        android:textSize="16sp"
+        android:textColor="@color/f1_gray"
+        android:textAlignment="center"
+        android:text="CIRCUIT" />
+
+</vector>
