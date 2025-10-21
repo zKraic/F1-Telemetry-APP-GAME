@@ -1,0 +1,28 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Tema principal de la aplicación -->
+    <style name="Theme.F1Telemetry" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Colores primarios -->
+        <item name="colorPrimary">@color/f1_red</item>
+        <item name="colorPrimaryVariant">@color/f1_dark_gray</item>
+        <item name="colorOnPrimary">@color/f1_white</item>
+        
+        <!-- Colores secundarios -->
+        <item name="colorSecondary">@color/f1_white</item>
+        <item name="colorSecondaryVariant">@color/f1_gray</item>
+        <item name="colorOnSecondary">@color/f1_black</item>
+        
+        <!-- Fondo -->
+        <item name="android:colorBackground">@color/f1_black</item>
+        <item name="colorSurface">@color/f1_dark_gray</item>
+        <item name="colorOnBackground">@color/f1_white</item>
+        <item name="colorOnSurface">@color/f1_white</item>
+        
+        <!-- Status bar -->
+        <item name="android:statusBarColor">@color/f1_black</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        
+        <!-- Fuente predeterminada (usando fuente del sistema similar a Titillium Web) -->
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="fontFamily">sans-serif</item>
+    </style>
+</resources>

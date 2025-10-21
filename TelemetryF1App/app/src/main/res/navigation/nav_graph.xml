@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="telemetry.f1.app.ui.dashboard.DashboardFragment"
+        android:label="Dashboard" />
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="telemetry.f1.app.ui.map.MapFragment"
+        android:label="Mapa" />
+
+    <fragment
+        android:id="@+id/timingFragment"
+        android:name="telemetry.f1.app.ui.timing.TimingFragment"
+        android:label="Tiempos" />
+
+</navigation>

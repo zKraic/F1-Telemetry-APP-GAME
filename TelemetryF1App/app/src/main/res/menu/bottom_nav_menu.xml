@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <item
+        android:id="@+id/dashboardFragment"
+        android:icon="@drawable/ic_dashboard"
+        android:title="Cockpit" />
+    
+    <item
+        android:id="@+id/mapFragment"
+        android:icon="@drawable/ic_map"
+        android:title="Mapa" />
+    
+    <item
+        android:id="@+id/timingFragment"
+        android:icon="@drawable/ic_timer"
+        android:title="Tiempos" />
+        
+</menu>

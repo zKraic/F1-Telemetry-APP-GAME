@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">F1 Telemetry</string>
+    <string name="dashboard_title">Cockpit</string>
+    <string name="map_title">Mapa</string>
+    <string name="timing_title">Tiempos</string>
+    
+    <!-- Dashboard strings -->
+    <string name="speed">Velocidad</string>
+    <string name="gear">Marcha</string>
+    <string name="rpm">RPM</string>
+    <string name="throttle">Acelerador</string>
+    <string name="brake">Freno</string>
+    <string name="drs">DRS</string>
+    <string name="engine_temp">Temp. Motor</string>
+    <string name="tyre_temps">Temp. Neumáticos</string>
+    
+    <!-- Timing strings -->
+    <string name="current_lap">Vuelta Actual</string>
+    <string name="sector_1">Sector 1</string>
+    <string name="sector_2">Sector 2</string>
+    <string name="sector_3">Sector 3</string>
+    <string name="best_lap">Mejor Tiempo</string>
+    <string name="position">Posición</string>
+    <string name="lap_number">Vuelta</string>
+    
+    <!-- Map strings -->
+    <string name="track_unknown">Circuito Desconocido</string>
+    <string name="your_car">Tu coche</string>
+    <string name="other_cars">Otros coches</string>
+    
+    <!-- General strings -->
+    <string name="connected">Conectado</string>
+    <string name="disconnected">Desconectado</string>
+    <string name="speed_value_kmh">%1$d km/h</string>
+    <string name="temperature_celsius">%1$d°C</string>
+</resources>
