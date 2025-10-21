@@ -109,6 +109,26 @@
         <item name="elevation">8dp</item>
     </style>
     
+    <!-- Bottom Navigation Text Styles -->
+    <style name="F1BottomNavTextActive" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textColor">@color/f1_red</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    
+    <style name="F1BottomNavTextInactive" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textColor">@color/f1_gray</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    
+    <!-- Active Indicator Style -->
+    <style name="F1ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/f1_red</item>
+        <item name="android:width">64dp</item>
+        <item name="android:height">32dp</item>
+    </style>
+    
     <!-- Text styles for telemetry data -->
     <style name="F1TelemetryValue">
         <item name="android:textSize">48sp</item>
@@ -136,5 +156,24 @@
         <item name="android:textColor">@color/f1_success</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textAllCaps">true</item>
+    </style>
+    
+    <!-- Status Indicator Styles -->
+    <style name="F1StatusIndicator">
+        <item name="android:layout_width">12dp</item>
+        <item name="android:layout_height">12dp</item>
+        <item name="android:background">@drawable/circle_indicator</item>
+    </style>
+    
+    <!-- Card Content Styles -->
+    <style name="F1CardTitle" parent="F1TextAppearance.Title.Large">
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+    
+    <style name="F1CardSubtitle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/f1_gray</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
 </resources>
