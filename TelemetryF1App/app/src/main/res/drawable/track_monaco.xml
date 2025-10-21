@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="400dp"
+    android:height="300dp"
+    android:viewportWidth="400"
+    android:viewportHeight="300">
+
+    <!-- Background -->
+    <path
+        android:pathData="M0,0 L400,0 L400,300 L0,300 Z"
+        android:fillColor="@color/f1_background" />
+
+    <!-- Monaco street circuit -->
+    <path
+        android:pathData="M50,120 L120,120 L120,80 L200,80 L200,60 L280,60 L280,80 L350,80 L350,120 L380,120 Q390,120 390,130 L390,180 Q390,190 380,190 L350,190 L350,220 L280,220 L280,240 L200,240 L200,220 L120,220 L120,180 L50,180 Q40,180 40,170 L40,130 Q40,120 50,120 Z"
+        android:strokeColor="@color/f1_white"
+        android:strokeWidth="5"
+        android:fillColor="@color/f1_surface" />
+
+    <!-- Casino Square detail -->
+    <path
+        android:pathData="M280,60 Q300,55 320,70 Q340,85 350,80"
+        android:strokeColor="@color/f1_gray"
+        android:strokeWidth="2" />
+
+    <!-- Swimming pool section -->
+    <path
+        android:pathData="M280,220 Q300,230 320,225 Q340,220 350,220"
+        android:strokeColor="@color/f1_gray"
+        android:strokeWidth="2" />
+
+    <!-- Start/Finish line -->
+    <path
+        android:pathData="M48,115 L52,115 L52,125 L48,125 Z"
+        android:fillColor="@color/f1_red" />
+
+    <!-- Sector markers -->
+    <circle
+        android:cx="200"
+        android:cy="60"
+        android:radius="3"
+        android:fillColor="@color/f1_purple" />
+    <circle
+        android:cx="380"
+        android:cy="150"
+        android:radius="3"
+        android:fillColor="@color/f1_purple" />
+    <circle
+        android:cx="200"
+        android:cy="240"
+        android:radius="3"
+        android:fillColor="@color/f1_purple" />
+
+</vector>
