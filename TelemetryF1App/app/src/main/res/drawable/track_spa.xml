@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="400dp"
+    android:height="300dp"
+    android:viewportWidth="400"
+    android:viewportHeight="300">
+
+    <!-- Background -->
+    <path
+        android:pathData="M0,0 L400,0 L400,300 L0,300 Z"
+        android:fillColor="@color/f1_background" />
+
+    <!-- Spa-Francorchamps - Famous for Eau Rouge -->
+    <path
+        android:pathData="M50,200 L100,200 Q120,180 140,160 Q160,140 180,120 Q200,100 220,90 Q240,80 260,85 Q280,90 300,100 L320,110 Q340,120 350,140 Q360,160 355,180 Q350,200 340,220 Q320,240 300,250 L200,260 Q150,265 120,250 Q90,235 70,220 Q50,210 50,200 Z"
+        android:strokeColor="@color/f1_white"
+        android:strokeWidth="5"
+        android:fillColor="@color/f1_surface" />
+
+    <!-- Eau Rouge elevation -->
+    <path
+        android:pathData="M140,160 Q160,140 180,120 Q200,100 220,90"
+        android:strokeColor="@color/f1_red"
+        android:strokeWidth="3" />
+
+    <!-- Start/Finish -->
+    <path
+        android:pathData="M48,195 L52,195 L52,205 L48,205 Z"
+        android:fillColor="@color/f1_red" />
+
+</vector>

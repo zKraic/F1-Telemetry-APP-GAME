@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="400dp"
+    android:height="300dp"
+    android:viewportWidth="400"
+    android:viewportHeight="300">
+
+    <!-- Background -->
+    <path
+        android:pathData="M0,0 L400,0 L400,300 L0,300 Z"
+        android:fillColor="@color/f1_background" />
+
+    <!-- Albert Park Circuit -->
+    <path
+        android:pathData="M80,180 Q60,160 70,140 Q80,120 100,110 L150,100 Q180,95 200,100 Q220,105 240,115 Q260,125 280,140 Q300,155 310,175 Q320,195 315,215 Q310,235 290,250 Q270,265 240,270 L180,275 Q150,270 120,255 Q90,240 80,220 Q70,200 80,180 Z"
+        android:strokeColor="@color/f1_white"
+        android:strokeWidth="5"
+        android:fillColor="@color/f1_surface" />
+
+    <!-- Lake section -->
+    <path
+        android:pathData="M280,140 Q300,155 310,175"
+        android:strokeColor="@color/f1_blue"
+        android:strokeWidth="2" />
+
+    <!-- Start/Finish -->
+    <path
+        android:pathData="M78,175 L82,175 L82,185 L78,185 Z"
+        android:fillColor="@color/f1_red" />
+
+</vector>

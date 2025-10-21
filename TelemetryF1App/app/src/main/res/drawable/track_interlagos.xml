@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="400dp"
+    android:height="300dp"
+    android:viewportWidth="400"
+    android:viewportHeight="300">
+
+    <!-- Background -->
+    <path
+        android:pathData="M0,0 L400,0 L400,300 L0,300 Z"
+        android:fillColor="@color/f1_background" />
+
+    <!-- Interlagos - Reverse direction -->
+    <path
+        android:pathData="M100,200 Q80,180 90,160 Q100,140 120,130 L180,120 Q220,115 250,125 Q280,135 300,155 Q320,175 315,195 Q310,215 290,230 Q270,245 240,250 L180,255 Q140,250 120,235 Q100,220 100,200 Z"
+        android:strokeColor="@color/f1_white"
+        android:strokeWidth="5"
+        android:fillColor="@color/f1_surface" />
+
+    <!-- Senna S -->
+    <path
+        android:pathData="M120,130 Q140,125 160,135 Q180,145 180,120"
+        android:strokeColor="@color/f1_green"
+        android:strokeWidth="3" />
+
+    <!-- Start/Finish -->
+    <path
+        android:pathData="M98,195 L102,195 L102,205 L98,205 Z"
+        android:fillColor="@color/f1_red" />
+
+</vector>

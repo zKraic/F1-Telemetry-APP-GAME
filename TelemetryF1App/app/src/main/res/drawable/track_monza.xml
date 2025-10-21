@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="400dp"
+    android:height="300dp"
+    android:viewportWidth="400"
+    android:viewportHeight="300">
+
+    <!-- Background -->
+    <path
+        android:pathData="M0,0 L400,0 L400,300 L0,300 Z"
+        android:fillColor="@color/f1_background" />
+
+    <!-- Monza - Temple of Speed -->
+    <path
+        android:pathData="M50,150 L180,150 Q200,150 210,140 L210,100 Q210,80 230,70 Q250,60 270,70 Q290,80 300,100 L300,140 Q310,150 330,150 L370,150 Q380,150 380,160 L380,180 Q380,190 370,190 L330,190 Q310,190 300,200 L300,240 Q290,260 270,270 Q250,280 230,270 Q210,260 210,240 L210,200 Q200,190 180,190 L50,190 Q40,190 40,180 L40,160 Q40,150 50,150 Z"
+        android:strokeColor="@color/f1_white"
+        android:strokeWidth="5"
+        android:fillColor="@color/f1_surface" />
+
+    <!-- Chicanes -->
+    <path
+        android:pathData="M210,140 Q215,135 210,130 Q205,135 210,140"
+        android:strokeColor="@color/f1_gray"
+        android:strokeWidth="2" />
+    <path
+        android:pathData="M210,200 Q215,205 210,210 Q205,205 210,200"
+        android:strokeColor="@color/f1_gray"
+        android:strokeWidth="2" />
+
+    <!-- Start/Finish -->
+    <path
+        android:pathData="M48,145 L52,145 L52,155 L48,155 Z"
+        android:fillColor="@color/f1_red" />
+
+</vector>
