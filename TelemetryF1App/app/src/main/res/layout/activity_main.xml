@@ -5,8 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/f1_black">
+    android:background="?attr/colorBackground"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.MainActivity">
 
+    <!-- Fragment Container with edge-to-edge support -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -19,13 +22,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/nav_graph" />
 
+    <!-- Material 3 Bottom Navigation with elevation and proper styling -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/f1_dark_gray"
+        android:layout_height="80dp"
+        android:background="?attr/colorSurface"
+        android:elevation="8dp"
+        app:itemActiveIndicatorStyle="@style/F1ActiveIndicator"
+        app:itemIconSize="24dp"
         app:itemIconTint="@color/f1_nav_selector"
+        app:itemTextAppearanceActive="@style/F1BottomNavTextActive"
+        app:itemTextAppearanceInactive="@style/F1BottomNavTextInactive"
         app:itemTextColor="@color/f1_nav_selector"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
