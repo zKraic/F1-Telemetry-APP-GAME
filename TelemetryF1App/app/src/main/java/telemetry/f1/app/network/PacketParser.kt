@@ -12,14 +12,20 @@ class PacketParser {
 
         val header = parseHeader(buffer)
 
-        if (header.m_packetFormat != 2024) return null
+        // Soporte para F1 2024 y F1 2025
+        if (header.m_packetFormat != 2024 && header.m_packetFormat != 2025) return null
 
-        return when (header.m_packetId) {
-            PacketTypes.MOTION -> parseMotionPacket(header, buffer)
-            PacketTypes.SESSION -> parseSessionPacket(header, buffer)
-            PacketTypes.LAP_DATA -> parseLapDataPacket(header, buffer)
-            PacketTypes.CAR_TELEMETRY -> parseCarTelemetryPacket(header, buffer)
-            else -> null
+        return try {
+            when (header.m_packetId) {
+                PacketTypes.MOTION -> parseMotionPacket(header, buffer)
+                PacketTypes.SESSION -> parseSessionPacket(header, buffer)
+                PacketTypes.LAP_DATA -> parseLapDataPacket(header, buffer)
+                PacketTypes.CAR_TELEMETRY -> parseCarTelemetryPacket(header, buffer)
+                else -> null
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 
@@ -38,9 +44,18 @@ class PacketParser {
         m_secondaryPlayerCarIndex = buffer.get().toInt()
     )
 
-    private fun parseMotionPacket(header: PacketHeader, buffer: ByteBuffer): PacketMotionData {
-        val carMotionData = List(22) { parseCarMotionData(buffer) }
-        return PacketMotionData(header, carMotionData)
+    private fun parseMotionPacket(header: PacketHeader, buffer: ByteBuffer): PacketMotionData? {
+        return try {
+            val carMotionData = mutableListOf<CarMotionData>()
+            for (i in 0 until 22) {
+                if (buffer.remaining() < MIN_CAR_MOTION_SIZE) break
+                carMotionData.add(parseCarMotionData(buffer))
+            }
+            PacketMotionData(header, carMotionData)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 
     private fun parseCarMotionData(buffer: ByteBuffer) = CarMotionData(
@@ -64,66 +79,140 @@ class PacketParser {
         m_roll = buffer.float
     )
 
-    private fun parseSessionPacket(header: PacketHeader, buffer: ByteBuffer): PacketSessionData {
-        return PacketSessionData(
-            header,
-            m_weather = buffer.get().toInt(),
-            m_trackTemperature = buffer.get().toInt(),
-            m_airTemperature = buffer.get().toInt(),
-            m_totalLaps = buffer.get().toInt(),
-            m_trackLength = buffer.short.toInt(),
-            m_sessionType = buffer.get().toInt(),
-            m_trackId = buffer.get().toInt(),
-            m_formula = buffer.get().toInt()
+    private fun parseSessionPacket(header: PacketHeader, buffer: ByteBuffer): PacketSessionData? {
+        return try {
+            PacketSessionData(
+                header,
+                m_weather = buffer.get().toInt(),
+                m_trackTemperature = buffer.get().toInt(),
+                m_airTemperature = buffer.get().toInt(),
+                m_totalLaps = buffer.get().toInt(),
+                m_trackLength = buffer.short.toInt(),
+                m_sessionType = buffer.get().toInt(),
+                m_trackId = buffer.get().toInt(),
+                m_formula = buffer.get().toInt()
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private fun parseLapDataPacket(header: PacketHeader, buffer: ByteBuffer): PacketLapData? {
+        return try {
+            val lapData = mutableListOf<LapData>()
+            for (i in 0 until 22) {
+                if (buffer.remaining() < MIN_LAP_DATA_SIZE) break
+                lapData.add(parseLapData(buffer))
+            }
+            PacketLapData(header, lapData)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private fun parseLapData(buffer: ByteBuffer): LapData {
+        // Leer datos básicos de vuelta
+        val lastLapTime = buffer.int.toLong()
+        val currentLapTime = buffer.int.toLong()
+        
+        // Para F1 2025, los tiempos de sector pueden tener formato diferente
+        // Intentamos leer como enteros de 32 bits (ms directos)
+        val sector1Time = try {
+            buffer.int
+        } catch (e: Exception) {
+            buffer.short.toInt()
+        }
+        
+        val sector2Time = try {
+            buffer.int
+        } catch (e: Exception) {
+            buffer.short.toInt()
+        }
+        
+        return LapData(
+            m_lastLapTimeInMS = lastLapTime,
+            m_currentLapTimeInMS = currentLapTime,
+            m_sector1TimeInMS = sector1Time,
+            m_sector2TimeInMS = sector2Time,
+            m_lapDistance = buffer.float,
+            m_totalDistance = buffer.float,
+            m_safetyCarDelta = buffer.float,
+            m_carPosition = buffer.get().toInt(),
+            m_currentLapNum = buffer.get().toInt(),
+            m_pitStatus = buffer.get().toInt(),
+            m_numPitStops = buffer.get().toInt(),
+            m_sector = buffer.get().toInt(),
+            m_currentLapInvalid = buffer.get().toInt(),
+            m_penalties = buffer.get().toInt(),
+            m_warnings = buffer.get().toInt(),
+            m_driverStatus = buffer.get().toInt(),
+            m_resultStatus = buffer.get().toInt()
         )
     }
 
-    private fun parseLapDataPacket(header: PacketHeader, buffer: ByteBuffer): PacketLapData {
-        val lapData = List(22) { parseLapData(buffer) }
-        return PacketLapData(header, lapData)
+    private fun parseCarTelemetryPacket(header: PacketHeader, buffer: ByteBuffer): PacketCarTelemetryData? {
+        return try {
+            val carTelemetryData = mutableListOf<CarTelemetryData>()
+            for (i in 0 until 22) {
+                if (buffer.remaining() < MIN_CAR_TELEMETRY_SIZE) break
+                carTelemetryData.add(parseCarTelemetryData(buffer))
+            }
+            PacketCarTelemetryData(header, carTelemetryData)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 
-    private fun parseLapData(buffer: ByteBuffer) = LapData(
-        m_lastLapTimeInMS = buffer.int.toLong(),
-        m_currentLapTimeInMS = buffer.int.toLong(),
-        m_sector1TimeInMS = buffer.short.toInt(),
-        m_sector2TimeInMS = buffer.short.toInt(),
-        m_lapDistance = buffer.float,
-        m_totalDistance = buffer.float,
-        m_safetyCarDelta = buffer.float,
-        m_carPosition = buffer.get().toInt(),
-        m_currentLapNum = buffer.get().toInt(),
-        m_pitStatus = buffer.get().toInt(),
-        m_numPitStops = buffer.get().toInt(),
-        m_sector = buffer.get().toInt(),
-        m_currentLapInvalid = buffer.get().toInt(),
-        m_penalties = buffer.get().toInt(),
-        m_warnings = buffer.get().toInt(),
-        m_driverStatus = buffer.get().toInt(),
-        m_resultStatus = buffer.get().toInt()
-    )
-
-    private fun parseCarTelemetryPacket(header: PacketHeader, buffer: ByteBuffer): PacketCarTelemetryData {
-        val carTelemetryData = List(22) { parseCarTelemetryData(buffer) }
-        return PacketCarTelemetryData(header, carTelemetryData)
+    private fun parseCarTelemetryData(buffer: ByteBuffer): CarTelemetryData {
+        val brakesTemp = mutableListOf<Int>()
+        val tyresSurface = mutableListOf<Int>()
+        val tyresInner = mutableListOf<Int>()
+        val tyresPressure = mutableListOf<Float>()
+        val surfaceType = mutableListOf<Int>()
+        
+        // Leer arrays de forma defensiva
+        repeat(4) {
+            if (buffer.remaining() >= 2) brakesTemp.add(buffer.short.toInt())
+        }
+        repeat(4) {
+            if (buffer.remaining() >= 1) tyresSurface.add(buffer.get().toInt())
+        }
+        repeat(4) {
+            if (buffer.remaining() >= 1) tyresInner.add(buffer.get().toInt())
+        }
+        repeat(4) {
+            if (buffer.remaining() >= 4) tyresPressure.add(buffer.float)
+        }
+        repeat(4) {
+            if (buffer.remaining() >= 1) surfaceType.add(buffer.get().toInt())
+        }
+        
+        return CarTelemetryData(
+            m_speed = if (buffer.remaining() >= 2) buffer.short.toInt() else 0,
+            m_throttle = if (buffer.remaining() >= 4) buffer.float else 0f,
+            m_steer = if (buffer.remaining() >= 4) buffer.float else 0f,
+            m_brake = if (buffer.remaining() >= 4) buffer.float else 0f,
+            m_clutch = if (buffer.remaining() >= 1) buffer.get().toInt() else 0,
+            m_gear = if (buffer.remaining() >= 1) buffer.get().toInt() else 0,
+            m_engineRPM = if (buffer.remaining() >= 2) buffer.short.toInt() else 0,
+            m_drs = if (buffer.remaining() >= 1) buffer.get().toInt() else 0,
+            m_revLightsPercent = if (buffer.remaining() >= 1) buffer.get().toInt() else 0,
+            m_revLightsBitValue = if (buffer.remaining() >= 2) buffer.short.toInt() else 0,
+            m_brakesTemperature = brakesTemp,
+            m_tyresSurfaceTemperature = tyresSurface,
+            m_tyresInnerTemperature = tyresInner,
+            m_engineTemperature = if (buffer.remaining() >= 2) buffer.short.toInt() else 0,
+            m_tyresPressure = tyresPressure,
+            m_surfaceType = surfaceType
+        )
     }
-
-    private fun parseCarTelemetryData(buffer: ByteBuffer) = CarTelemetryData(
-        m_speed = buffer.short.toInt(),
-        m_throttle = buffer.float,
-        m_steer = buffer.float,
-        m_brake = buffer.float,
-        m_clutch = buffer.get().toInt(),
-        m_gear = buffer.get().toInt(),
-        m_engineRPM = buffer.short.toInt(),
-        m_drs = buffer.get().toInt(),
-        m_revLightsPercent = buffer.get().toInt(),
-        m_revLightsBitValue = buffer.short.toInt(),
-        m_brakesTemperature = List(4) { buffer.short.toInt() },
-        m_tyresSurfaceTemperature = List(4) { buffer.get().toInt() },
-        m_tyresInnerTemperature = List(4) { buffer.get().toInt() },
-        m_engineTemperature = buffer.short.toInt(),
-        m_tyresPressure = List(4) { buffer.float },
-        m_surfaceType = List(4) { buffer.get().toInt() }
-    )
+    
+    companion object {
+        private const val MIN_CAR_MOTION_SIZE = 60 // bytes aproximados
+        private const val MIN_LAP_DATA_SIZE = 53   // bytes aproximados  
+        private const val MIN_CAR_TELEMETRY_SIZE = 60 // bytes aproximados
+    }
 }
