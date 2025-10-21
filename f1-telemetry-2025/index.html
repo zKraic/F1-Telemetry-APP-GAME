@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>F1 2025 Telemetry</title>
+    <link rel="manifest" href="data:application/json;charset=utf-8,{%22name%22:%22F1%202025%20Telemetry%22,%22short_name%22:%22F1%20Telemetry%22,%22start_url%22:%22/%22,%22display%22:%22standalone%22,%22theme_color%22:%22%231A1A1A%22,%22background_color%22:%22%231A1A1A%22}">
+    <meta name="theme-color" content="#1A1A1A">
+    <style>
+        :root {
+  /* Primitive Color Tokens */
+  --color-white: rgba(255, 255, 255, 1);
+  --color-black: rgba(0, 0, 0, 1);
+  --color-cream-50: rgba(252, 252, 249, 1);
+  --color-cream-100: rgba(255, 255, 253, 1);
+  --color-gray-200: rgba(245, 245, 245, 1);
+  --color-gray-300: rgba(167, 169, 169, 1);
+  --color-gray-400: rgba(119, 124, 124, 1);
+  --color-slate-500: rgba(98, 108, 113, 1);
+  --color-brown-600: rgba(94, 82, 64, 1);
+  --color-charcoal-700: rgba(31, 33, 33, 1);
+  --color-charcoal-800: rgba(38, 40, 40, 1);
+  --color-slate-900: rgba(19, 52, 59, 1);
+  --color-teal-300: rgba(50, 184, 198, 1);
+  --color-teal-400: rgba(45, 166, 178, 1);
+  --color-teal-500: rgba(33, 128, 141, 1);
+  --color-teal-600: rgba(29, 116, 128, 1);
+  --color-teal-700: rgba(26, 104, 115, 1);
+  --color-teal-800: rgba(41, 150, 161, 1);
+  --color-red-400: rgba(255, 84, 89, 1);
+  --color-red-500: rgba(192, 21, 47, 1);
+  --color-orange-400: rgba(230, 129, 97, 1);
+  --color-orange-500: rgba(168, 75, 47, 1);
+
+  /* Custom F1 Colors */
+  --color-f1-bg-primary: #1A1A1A;
+  --color-f1-bg-secondary: #2D2D2D;
+  --color-f1-green: #00FF41;
+  --color-f1-yellow: #FFD700;
+  --color-f1-red: #FF3333;
+  --color-f1-blue: #00B8FF;
+  --color-f1-text: #FFFFFF;
+  --color-f1-text-dim: #CCCCCC;
+
+  /* Override semantic colors for F1 theme */
+  --color-background: var(--color-f1-bg-primary);
+  --color-surface: var(--color-f1-bg-secondary);
+  --color-text: var(--color-f1-text);
+  --color-text-secondary: var(--color-f1-text-dim);
+  --color-primary: var(--color-f1-green);
+  --color-primary-hover: #00E03A;
+  --color-error: var(--color-f1-red);
+  --color-warning: var(--color-f1-yellow);
+  --color-success: var(--color-f1-green);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', monospace;
+    background: var(--color-background);
+    color: var(--color-text);
+    overflow-x: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Header */
+.header {
+    background: var(--color-surface);
+    padding: 10px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--color-primary);
+    z-index: 100;
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-error);
+    transition: background 0.3s;
+}
+
+.status-dot.connected {
+    background: var(--color-success);
+}
+
+.status-text {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.screen {
+    display: none;
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.screen.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Dashboard Screen */
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 16px;
+    height: 100%;
+}
+
+.gauge {
+    background: var(--color-surface);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gauge-title {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.gauge-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--color-primary);
+    margin-bottom: 4px;
+}
+
+.gauge-unit {
+    font-size: 10px;
+    color: var(--color-text-secondary);
+}
+
+.gauge-large {
+    grid-column: 1 / -1;
+}
+
+.rpm-gauge {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+.rpm-circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.rpm-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--color-primary) 0%, var(--color-primary) 70%, var(--color-warning) 70%, var(--color-warning) 85%, var(--color-error) 85%, var(--color-error) 100%);
+    opacity: 0.8;
+    transform: rotate(0deg);
+    transition: transform 0.1s linear;
+}
+
+.rpm-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.gear-display {
+    font-size: 48px;
+    font-weight: bold;
+    color: var(--color-primary);
+    text-align: center;
+    margin: 20px 0;
+}
+
+.input-bars {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    justify-content: center;
+}
+
+.input-bar {
+    width: 40px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.input-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border-radius: 0 0 8px 8px;
+    transition: height 0.1s linear;
+}
+
+.throttle-fill {
+    background: var(--color-success);
+}
+
+.brake-fill {
+    background: var(--color-error);
+}
+
+.rev-lights {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.rev-light {
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    transition: background 0.1s;
+}
+
+.rev-light.active {
+    background: var(--color-primary);
+}
+
+.rev-light.warning {
+    background: var(--color-warning);
+}
+
+.rev-light.danger {
+    background: var(--color-error);
+}
+
+/* Temperature Display */
+.temp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+}
+
+.temp-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.temp-label {
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    margin-bottom: 4px;
+}
+
+.temp-value {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+/* Map Screen */
+.map-container {
+    flex: 1;
+    background: var(--color-surface);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.track-svg {
+    width: 100%;
+    height: 100%;
+    background: #0a0a0a;
+}
+
+.track-path {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.3);
+    stroke-width: 8;
+}
+
+.racing-line {
+    fill: none;
+    stroke: var(--color-primary);
+    stroke-width: 3;
+    opacity: 0.7;
+}
+
+.car-marker {
+    fill: var(--color-f1-blue);
+    r: 6;
+}
+
+.car-marker.player {
+    fill: var(--color-primary);
+    r: 8;
+}
+
+.map-controls {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.map-btn {
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Timing Screen */
+.timing-header {
+    display: grid;
+    grid-template-columns: 40px 1fr 60px 60px 60px 60px;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--color-text-secondary);
+}
+
+.timing-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.timing-row {
+    display: grid;
+    grid-template-columns: 40px 1fr 60px 60px 60px 60px;
+    gap: 8px;
+    padding: 12px;
+    background: var(--color-surface);
+    border-radius: 8px;
+    align-items: center;
+    transition: background 0.3s;
+}
+
+.timing-row:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.position {
+    font-weight: bold;
+    color: var(--color-primary);
+    text-align: center;
+}
+
+.driver-name {
+    font-weight: bold;
+}
+
+.time {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    text-align: center;
+}
+
+.time.fastest {
+    color: var(--color-primary);
+    font-weight: bold;
+}
+
+.time.personal-best {
+    color: var(--color-warning);
+}
+
+/* Recording Screen */
+.recording-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    align-items: center;
+}
+
+.record-btn {
+    background: var(--color-error);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s;
+}
+
+.record-btn:hover {
+    background: #cc0000;
+}
+
+.record-btn.recording {
+    background: var(--color-primary);
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.session-list {
+    background: var(--color-surface);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.session-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.session-info h4 {
+    margin-bottom: 4px;
+}
+
+.session-info p {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+}
+
+.session-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    background: transparent;
+    border: 1px solid var(--color-text-secondary);
+    color: var(--color-text-secondary);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.action-btn:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: black;
+}
+
+/* Settings Screen */
+.settings-section {
+    background: var(--color-surface);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.settings-section h3 {
+    margin-bottom: 16px;
+    color: var(--color-primary);
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+}
+
+.setting-input {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    width: 120px;
+    font-size: 14px;
+}
+
+.setting-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+    background: var(--color-surface);
+    display: flex;
+    border-top: 2px solid var(--color-primary);
+    z-index: 100;
+}
+
+.nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 8px;
+    border: none;
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.nav-item.active {
+    color: var(--color-primary);
+    background: rgba(0, 255, 65, 0.1);
+}
+
+.nav-icon {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.nav-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Responsive adjustments for Samsung S22 Ultra */
+@media (max-width: 480px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .gauge-large {
+        grid-column: 1;
+    }
+    
+    .timing-header,
+    .timing-row {
+        grid-template-columns: 30px 1fr 50px 50px 50px;
+        font-size: 11px;
+    }
+    
+    .gauge-value {
+        font-size: 24px;
+    }
+}
+
+/* Loading animation */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid var(--color-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Fullscreen mode */
+.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    background: var(--color-background);
+}
+
+.fullscreen .header,
+.fullscreen .bottom-nav {
+    display: none;
+}
+
+.exit-fullscreen {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    z-index: 1001;
+}
+    </style>
+</head>
+<body>
+    <div class="app" id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">F1 2025 TELEMETRY</div>
+            <div class="connection-status">
+                <div class="status-dot" id="statusDot"></div>
+                <span class="status-text" id="statusText">Disconnected</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Screen -->
+            <section class="screen dashboard" id="dashboardScreen">
+                <!-- Speed Gauge -->
+                <div class="gauge">
+                    <div class="gauge-title">Speed</div>
+                    <div class="gauge-value" id="speedValue">0</div>
+                    <div class="gauge-unit">km/h</div>
+                </div>
+
+                <!-- RPM Gauge -->
+                <div class="gauge">
+                    <div class="gauge-title">RPM</div>
+                    <div class="rpm-gauge">
+                        <div class="rpm-circle">
+                            <div class="rpm-fill" id="rpmFill"></div>
+                            <div class="rpm-value" id="rpmValue">0</div>
+                        </div>
+                    </div>
+                    <div class="rev-lights" id="revLights">
+                        <!-- Rev lights will be generated by JS -->
+                    </div>
+                </div>
+
+                <!-- Gear Display -->
+                <div class="gauge gauge-large">
+                    <div class="gauge-title">Gear</div>
+                    <div class="gear-display" id="gearDisplay">N</div>
+                    <div class="input-bars">
+                        <div class="input-bar">
+                            <div class="input-fill throttle-fill" id="throttleFill"></div>
+                        </div>
+                        <div class="input-bar">
+                            <div class="input-fill brake-fill" id="brakeFill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Temperature Grid -->
+                <div class="gauge">
+                    <div class="gauge-title">Engine</div>
+                    <div class="gauge-value" id="engineTemp">85</div>
+                    <div class="gauge-unit">°C</div>
+                </div>
+
+                <div class="gauge">
+                    <div class="gauge-title">Fuel</div>
+                    <div class="gauge-value" id="fuelLevel">45.2</div>
+                    <div class="gauge-unit">kg</div>
+                </div>
+
+                <!-- Tire Temperatures -->
+                <div class="gauge gauge-large">
+                    <div class="gauge-title">Tire Temperatures</div>
+                    <div class="temp-grid">
+                        <div class="temp-item">
+                            <div class="temp-label">FL</div>
+                            <div class="temp-value" id="tireTempFL">95</div>
+                        </div>
+                        <div class="temp-item">
+                            <div class="temp-label">FR</div>
+                            <div class="temp-value" id="tireTempFR">97</div>
+                        </div>
+                        <div class="temp-item">
+                            <div class="temp-label">RL</div>
+                            <div class="temp-value" id="tireTempRL">92</div>
+                        </div>
+                        <div class="temp-item">
+                            <div class="temp-label">RR</div>
+                            <div class="temp-value" id="tireTempRR">94</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Live Map Screen -->
+            <section class="screen" id="mapScreen">
+                <div class="map-container">
+                    <svg class="track-svg" viewBox="0 0 400 300" id="trackSvg">
+                        <!-- Track path (simplified Monaco-like layout) -->
+                        <path class="track-path" d="M 50 150 Q 100 50 200 80 Q 300 100 350 150 Q 320 200 250 220 Q 150 240 100 200 Q 70 180 50 150 Z" />
+                        <path class="racing-line" d="M 60 150 Q 110 70 200 90 Q 290 110 340 150 Q 310 190 250 210 Q 160 230 110 190 Q 80 170 60 150 Z" />
+                        
+                        <!-- Car markers will be added by JavaScript -->
+                    </svg>
+                    
+                    <div class="map-controls">
+                        <button class="map-btn" onclick="zoomIn()">+</button>
+                        <button class="map-btn" onclick="zoomOut()">-</button>
+                        <button class="map-btn" onclick="resetZoom()">⌂</button>
+                    </div>
+                </div>
+                
+                <div class="gauge">
+                    <div class="gauge-title">Position</div>
+                    <div class="gauge-value" id="positionValue">1</div>
+                    <div class="gauge-unit">/ 20</div>
+                </div>
+            </section>
+
+            <!-- Timing Screen -->
+            <section class="screen" id="timingScreen">
+                <div class="timing-header">
+                    <div>POS</div>
+                    <div>DRIVER</div>
+                    <div>TIME</div>
+                    <div>S1</div>
+                    <div>S2</div>
+                    <div>S3</div>
+                </div>
+                
+                <div class="timing-list" id="timingList">
+                    <!-- Timing rows will be generated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Recording Screen -->
+            <section class="screen" id="recordingScreen">
+                <div class="recording-controls">
+                    <button class="record-btn" id="recordBtn" onclick="toggleRecording()">
+                        <span id="recordIcon">●</span>
+                        <span id="recordText">Start Recording</span>
+                    </button>
+                    <div class="gauge" style="margin: 0; padding: 8px 16px; min-width: 120px;">
+                        <div class="gauge-title" style="margin: 0;">Duration</div>
+                        <div class="gauge-value" id="recordDuration" style="font-size: 16px; margin: 0;">00:00</div>
+                    </div>
+                </div>
+                
+                <div class="session-list">
+                    <h3>Recorded Sessions</h3>
+                    <div id="sessionsList">
+                        <!-- Sessions will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Screen -->
+            <section class="screen" id="settingsScreen">
+                <div class="settings-section">
+                    <h3>Network Configuration</h3>
+                    <div class="setting-item">
+                        <label>UDP Port</label>
+                        <input class="setting-input" type="number" value="20777" id="udpPort">
+                    </div>
+                    <div class="setting-item">
+                        <label>Game IP Address</label>
+                        <input class="setting-input" type="text" value="192.168.1.100" id="gameIP">
+                    </div>
+                    <div class="setting-item">
+                        <label>Connection Timeout</label>
+                        <input class="setting-input" type="number" value="5000" id="timeout">
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Display Settings</h3>
+                    <div class="setting-item">
+                        <label>Refresh Rate (Hz)</label>
+                        <input class="setting-input" type="number" value="30" id="refreshRate">
+                    </div>
+                    <div class="setting-item">
+                        <label>Temperature Unit</label>
+                        <select class="setting-input" id="tempUnit">
+                            <option value="celsius">Celsius</option>
+                            <option value="fahrenheit">Fahrenheit</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label>Speed Unit</label>
+                        <select class="setting-input" id="speedUnit">
+                            <option value="kmh">km/h</option>
+                            <option value="mph">mph</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Application Info</h3>
+                    <div class="setting-item">
+                        <label>Version</label>
+                        <span>1.0.0</span>
+                    </div>
+                    <div class="setting-item">
+                        <label>F1 Game Version</label>
+                        <span>F1 2025</span>
+                    </div>
+                    <div class="setting-item">
+                        <label>Telemetry Protocol</label>
+                        <span>UDP 2025</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-screen="dashboard">
+                <div class="nav-icon">⚡</div>
+                <div class="nav-label">Dashboard</div>
+            </button>
+            <button class="nav-item" data-screen="map">
+                <div class="nav-icon">🗺️</div>
+                <div class="nav-label">Map</div>
+            </button>
+            <button class="nav-item" data-screen="timing">
+                <div class="nav-icon">⏱️</div>
+                <div class="nav-label">Timing</div>
+            </button>
+            <button class="nav-item" data-screen="recording">
+                <div class="nav-icon">📹</div>
+                <div class="nav-label">Recording</div>
+            </button>
+            <button class="nav-item" data-screen="settings">
+                <div class="nav-icon">⚙️</div>
+                <div class="nav-label">Settings</div>
+            </button>
+        </nav>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
