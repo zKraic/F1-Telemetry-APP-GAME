@@ -1,28 +1,140 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Tema principal de la aplicación -->
-    <style name="Theme.F1Telemetry" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Colores primarios -->
+    <!-- Tema principal de la aplicación - Material Design 3 -->
+    <style name="Theme.F1Telemetry" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary colors -->
         <item name="colorPrimary">@color/f1_red</item>
-        <item name="colorPrimaryVariant">@color/f1_dark_gray</item>
         <item name="colorOnPrimary">@color/f1_white</item>
+        <item name="colorPrimaryContainer">@color/f1_dark_gray</item>
+        <item name="colorOnPrimaryContainer">@color/f1_light_gray</item>
         
-        <!-- Colores secundarios -->
-        <item name="colorSecondary">@color/f1_white</item>
-        <item name="colorSecondaryVariant">@color/f1_gray</item>
+        <!-- Secondary colors -->
+        <item name="colorSecondary">@color/f1_gold</item>
         <item name="colorOnSecondary">@color/f1_black</item>
+        <item name="colorSecondaryContainer">@color/f1_surface</item>
+        <item name="colorOnSecondaryContainer">@color/f1_on_surface</item>
         
-        <!-- Fondo -->
-        <item name="android:colorBackground">@color/f1_black</item>
-        <item name="colorSurface">@color/f1_dark_gray</item>
-        <item name="colorOnBackground">@color/f1_white</item>
-        <item name="colorOnSurface">@color/f1_white</item>
+        <!-- Tertiary colors -->
+        <item name="colorTertiary">@color/f1_blue</item>
+        <item name="colorOnTertiary">@color/f1_white</item>
         
-        <!-- Status bar -->
-        <item name="android:statusBarColor">@color/f1_black</item>
+        <!-- Background colors -->
+        <item name="colorBackground">@color/f1_background</item>
+        <item name="colorOnBackground">@color/f1_on_background</item>
+        <item name="colorSurface">@color/f1_surface</item>
+        <item name="colorOnSurface">@color/f1_on_surface</item>
+        
+        <!-- Surface variants -->
+        <item name="colorSurfaceVariant">@color/f1_dark_gray</item>
+        <item name="colorOnSurfaceVariant">@color/f1_light_gray</item>
+        
+        <!-- Error colors -->
+        <item name="colorError">@color/f1_danger</item>
+        <item name="colorOnError">@color/f1_white</item>
+        
+        <!-- System bars -->
+        <item name="android:statusBarColor">@color/f1_background</item>
+        <item name="android:navigationBarColor">@color/f1_background</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o">false</item>
         
-        <!-- Fuente predeterminada (usando fuente del sistema similar a Titillium Web) -->
+        <!-- Window configuration -->
+        <item name="android:windowBackground">@color/f1_background</item>
+        <item name="android:colorBackground">@color/f1_background</item>
+        
+        <!-- Typography - F1 style fonts -->
+        <item name="textAppearanceDisplayLarge">@style/F1TextAppearance.Display.Large</item>
+        <item name="textAppearanceHeadlineLarge">@style/F1TextAppearance.Headline.Large</item>
+        <item name="textAppearanceTitleLarge">@style/F1TextAppearance.Title.Large</item>
+        <item name="textAppearanceBodyLarge">@style/F1TextAppearance.Body.Large</item>
+        <item name="textAppearanceLabelLarge">@style/F1TextAppearance.Label.Large</item>
+        
+        <!-- Component styles -->
+        <item name="materialCardViewStyle">@style/F1CardView</item>
+        <item name="progressBarStyle">@style/F1ProgressBar</item>
+        <item name="bottomNavigationStyle">@style/F1BottomNavigation</item>
+    </style>
+    
+    <!-- Typography Styles -->
+    <style name="F1TextAppearance.Display.Large" parent="TextAppearance.Material3.DisplayLarge">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/f1_white</item>
+        <item name="android:textSize">57sp</item>
+    </style>
+    
+    <style name="F1TextAppearance.Headline.Large" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/f1_white</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+    
+    <style name="F1TextAppearance.Title.Large" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/f1_white</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+    
+    <style name="F1TextAppearance.Body.Large" parent="TextAppearance.Material3.BodyLarge">
         <item name="android:fontFamily">sans-serif</item>
-        <item name="fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/f1_on_surface</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    
+    <style name="F1TextAppearance.Label.Large" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/f1_red</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+    
+    <!-- Component Styles -->
+    <style name="F1CardView" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/f1_surface</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="strokeColor">@color/f1_dark_gray</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+    
+    <style name="F1ProgressBar" parent="Widget.Material3.LinearProgressIndicator">
+        <item name="trackColor">@color/f1_dark_gray</item>
+        <item name="indicatorColor">@color/f1_red</item>
+        <item name="trackThickness">8dp</item>
+        <item name="trackCornerRadius">4dp</item>
+    </style>
+    
+    <style name="F1BottomNavigation" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">@color/f1_surface</item>
+        <item name="itemIconTint">@color/f1_nav_selector</item>
+        <item name="itemTextColor">@color/f1_nav_selector</item>
+        <item name="elevation">8dp</item>
+    </style>
+    
+    <!-- Text styles for telemetry data -->
+    <style name="F1TelemetryValue">
+        <item name="android:textSize">48sp</item>
+        <item name="android:textColor">@color/f1_white</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    
+    <style name="F1TelemetryLabel">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/f1_red</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.1</item>
+    </style>
+    
+    <style name="F1SectorTime">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/f1_purple</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+    
+    <style name="F1ConnectionStatus">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/f1_success</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 </resources>
